@@ -1,0 +1,56 @@
+use std::{env::args, time::Instant};
+
+use crate::days::day1::Day1;
+
+pub mod days;
+
+struct Timer {
+    start: Instant,
+}
+
+impl Timer {
+    fn new() -> Self {
+        Self {
+            start: Instant::now(),
+        }
+    }
+}
+
+impl Drop for Timer {
+    fn drop(&mut self) {
+        let end = Instant::now();
+        println!("Took {}s", end.duration_since(self.start).as_secs_f64())
+    }
+}
+
+trait Day {
+    fn solve(&self);
+}
+
+struct Solver {
+    day: Box<dyn Day>,
+}
+
+impl Solver {
+    fn new(day: impl Day + 'static) -> Self {
+        Self { day: Box::new(day) }
+    }
+
+    fn solve(&self) {
+        self.day.solve();
+    }
+}
+
+fn main() {
+    let days = vec![Solver::new(Day1 {})];
+    args()
+        .nth(1)
+        .unwrap()
+        .split(',')
+        .map(|i| i.parse::<usize>().unwrap())
+        .for_each(|day| {
+            println!("Day {day}");
+            days[day - 1].solve();
+            println!("===");
+        });
+}
