@@ -1,6 +1,6 @@
 use std::{env::args, time::Instant};
 
-use crate::days::day1::Day1;
+use crate::days::{day1::Day1, day2::Day2};
 
 pub mod days;
 
@@ -42,7 +42,7 @@ impl Solver {
 }
 
 fn main() {
-    let days = vec![Solver::new(Day1 {})];
+    let days = vec![Solver::new(Day1 {}), Solver::new(Day2 {})];
     args()
         .nth(1)
         .unwrap()
